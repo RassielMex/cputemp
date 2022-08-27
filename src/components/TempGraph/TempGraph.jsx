@@ -78,9 +78,17 @@ const TempGraph = () => {
     setCore(_core);
   };
 
+  const onRefresh = () => {
+    getData(core);
+  };
+
   return (
     <>
-      <GraphForm handleChange={onCpuChange} core={core} />
+      <GraphForm
+        handleChange={onCpuChange}
+        core={core}
+        handleClick={onRefresh}
+      />
       <Bar data={graphData} options={options} />
     </>
   );
