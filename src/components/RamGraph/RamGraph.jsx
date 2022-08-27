@@ -10,6 +10,9 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
+import { Button } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { Stack } from "@mui/system";
 
 ChartJS.register(
   CategoryScale,
@@ -22,18 +25,22 @@ ChartJS.register(
 
 const RamGraph = () => {
   const [data, setData] = useState([]);
-  const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_0`;
-  useEffect(() => {
+
+  const getData = () => {
+    const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_0`;
     axios
       .get(endPoint)
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setData(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
-  }, [setData, endPoint]);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
 
   const labels = data.map((d) => {
     return `${d.time.hour}:${d.time.minute < 10 ? "0" : ""}${d.time.minute}hrs`;
@@ -81,8 +88,22 @@ const RamGraph = () => {
     },
   };
 
+  const handleClick = () => {
+    getData();
+  };
+
   return (
     <>
+      <Stack justifyContent={"end"} direction={"row"} marginTop="5rem">
+        <Button
+          variant="contained"
+          color="warning"
+          startIcon={<RefreshIcon />}
+          onClick={handleClick}
+        >
+          Refresh
+        </Button>
+      </Stack>
       <Bar data={graphData} options={options} />
     </>
   );
