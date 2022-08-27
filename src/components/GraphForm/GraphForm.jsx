@@ -21,7 +21,7 @@ const GraphForm = ({ handleChange, core, handleClick }) => {
   };
 
   return (
-    <Stack direction={"row"} spacing={2} justifyContent={"space-between"}>
+    <Stack direction={"row"} justifyContent={"space-between"}>
       <FormControl size="small">
         <InputLabel id={ctrl.labelID}>{ctrl.label}</InputLabel>
         <Select
@@ -42,7 +42,6 @@ const GraphForm = ({ handleChange, core, handleClick }) => {
           })}
         </Select>
       </FormControl>
-
       <Button
         variant="contained"
         color="warning"
