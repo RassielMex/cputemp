@@ -94,7 +94,12 @@ const RamGraph = () => {
 
   return (
     <>
-      <Stack justifyContent={"end"} direction={"row"} marginTop="5rem">
+      <Stack
+        justifyContent={"end"}
+        direction={"row"}
+        marginTop="5rem"
+        height={"40px"}
+      >
         <Button
           variant="contained"
           color="warning"
