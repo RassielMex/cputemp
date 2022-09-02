@@ -10,8 +10,11 @@ import {
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
-import axios from "axios";
 import GraphForm from "../GraphForm/GraphForm";
+import { getData } from "../../common/fetchData";
+import { options } from "./TempGraph.Config";
+import { labelsFromTime } from "../../common/createLabels";
+import colors from "../../common/barColors";
 
 ChartJS.register(
   CategoryScale,
@@ -26,52 +29,25 @@ const TempGraph = () => {
   const [data, setData] = useState([]);
   const [core, setCore] = useState(0);
 
-  const getData = (_core) => {
-    const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_${_core}`;
-    axios
-      .get(endPoint)
-      .then((response) => {
-        // console.log(response.data);
-        setData(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_${core}`;
 
   useEffect(() => {
-    getData(core);
-  }, [core]);
+    getData(endPoint, setData);
+  }, [endPoint]);
 
   const dataTemp = data.map((d) => {
     return d.temp.value;
   });
-  const labels = data.map((d) => {
-    return `${d.time.hour}:${d.time.minute < 10 ? "0" : ""}${d.time.minute}hrs`;
-  });
 
   const graphData = {
-    labels,
+    labels: labelsFromTime(data),
     datasets: [
       {
         label: `Core  ${core}`,
         data: dataTemp,
-        backgroundColor: "rgba(90, 150, 12, 0.5)",
+        backgroundColor: colors.primary,
       },
     ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Temperature",
-      },
-    },
   };
 
   const onCpuChange = (_core) => {

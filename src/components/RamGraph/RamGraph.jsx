@@ -9,10 +9,13 @@ import {
   Chart as ChartJS,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import axios from "axios";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { Stack } from "@mui/system";
+
+import { options } from "./RamGraph.Config";
+import { getData } from "../../common/fetchData";
+import { labelsFromTime } from "../../common/createLabels";
+import colors from "../../common/barColors";
 
 ChartJS.register(
   CategoryScale,
@@ -25,26 +28,13 @@ ChartJS.register(
 
 const RamGraph = () => {
   const [data, setData] = useState([]);
+  const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_0`;
 
-  const getData = () => {
-    const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_0`;
-    axios
-      .get(endPoint)
-      .then((response) => {
-        //console.log(response.data);
-        setData(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
   useEffect(() => {
-    getData();
-  }, []);
-
-  const labels = data.map((d) => {
-    return `${d.time.hour}:${d.time.minute < 10 ? "0" : ""}${d.time.minute}hrs`;
-  });
+    setInterval(() => {
+      getData(endPoint, setData);
+    }, 1000);
+  }, [endPoint]);
 
   const dataRamAvailable = data.map((d) => {
     return d.ram.value_available;
@@ -54,61 +44,24 @@ const RamGraph = () => {
   });
 
   const graphData = {
-    labels,
+    labels: labelsFromTime(data),
     datasets: [
       {
         label: "Ram Used",
         data: dataRamUsed,
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: colors.warning,
       },
 
       {
         label: "Ram Available",
         data: dataRamAvailable,
-        backgroundColor: "rgba(25, 99, 132, 0.5)",
+        backgroundColor: colors.success,
       },
     ],
   };
 
-  const options = {
-    plugins: {
-      title: {
-        display: true,
-        text: "Ram Usage",
-      },
-    },
-    responsive: true,
-    scales: {
-      x: {
-        stacked: true,
-      },
-      y: {
-        stacked: true,
-      },
-    },
-  };
-
-  const handleClick = () => {
-    getData();
-  };
-
   return (
     <>
-      <Stack
-        justifyContent={"end"}
-        direction={"row"}
-        marginTop="5rem"
-        height={"40px"}
-      >
-        <Button
-          variant="contained"
-          color="warning"
-          startIcon={<RefreshIcon />}
-          onClick={handleClick}
-        >
-          Refresh
-        </Button>
-      </Stack>
       <Bar data={graphData} options={options} />
     </>
   );

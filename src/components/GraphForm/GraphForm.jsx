@@ -1,5 +1,4 @@
 import {
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -9,7 +8,7 @@ import {
 import RefreshIcon from "@mui/icons-material/Refresh";
 import React from "react";
 
-const GraphForm = ({ handleChange, core, handleClick }) => {
+const GraphForm = ({ handleChange, core }) => {
   const ctrl = {
     labelID: "label_core",
     selectID: "core",
@@ -21,36 +20,26 @@ const GraphForm = ({ handleChange, core, handleClick }) => {
   };
 
   return (
-    <Stack direction={"row"} justifyContent={"space-between"} height={"40px"}>
-      <FormControl size="small">
-        <InputLabel id={ctrl.labelID}>{ctrl.label}</InputLabel>
-        <Select
-          onChange={(e) => {
-            handleChange(e.target.value);
-          }}
-          labelId={ctrl.labelID}
-          id={ctrl.selectID}
-          label={ctrl.label}
-          value={core}
-        >
-          {ctrl.items.map((item, idx) => {
-            return (
-              <MenuItem key={idx} value={item.value}>
-                {item.inner}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      <Button
-        variant="contained"
-        color="warning"
-        startIcon={<RefreshIcon />}
-        onClick={handleClick}
+    <FormControl size="small">
+      <InputLabel id={ctrl.labelID}>{ctrl.label}</InputLabel>
+      <Select
+        onChange={(e) => {
+          handleChange(e.target.value);
+        }}
+        labelId={ctrl.labelID}
+        id={ctrl.selectID}
+        label={ctrl.label}
+        value={core}
       >
-        Refresh
-      </Button>
-    </Stack>
+        {ctrl.items.map((item, idx) => {
+          return (
+            <MenuItem key={idx} value={item.value}>
+              {item.inner}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
   );
 };
 
