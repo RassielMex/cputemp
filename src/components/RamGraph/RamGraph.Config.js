@@ -2,7 +2,7 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: "Ram Usage",
+      text: "Ram Usage (gb)",
     },
   },
   responsive: true,
