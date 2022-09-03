@@ -53,7 +53,7 @@ const TempGraph = () => {
     labels: labelsFromTime(data),
     datasets: [
       {
-        label: `Core  ${core}`,
+        label: `Core ${core}`,
         data: dataTemp,
         backgroundColor: colors.primary,
       },

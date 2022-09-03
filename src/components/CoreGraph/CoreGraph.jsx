@@ -59,12 +59,12 @@ const CoreGraph = () => {
         return d.core_code === "core_3";
       });
       return core0.map((_core0, idx) => {
-        return (
+        return Math.round(
           (_core0?.value +
             core1[idx]?.value +
             core2[idx]?.value +
             core3[idx]?.value) /
-          4
+            4
         );
       });
     } else {
