@@ -9,8 +9,6 @@ import {
   Chart as ChartJS,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { Button, Stack } from "@mui/material";
-import RefreshIcon from "@mui/icons-material/Refresh";
 
 import { options } from "./RamGraph.Config";
 import { getData } from "../../common/fetchData";
@@ -31,9 +29,13 @@ const RamGraph = () => {
   const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_0`;
 
   useEffect(() => {
-    setInterval(() => {
+    getData(endPoint, setData);
+    const id = setInterval(() => {
       getData(endPoint, setData);
-    }, 1000);
+    }, 60000);
+    return () => {
+      clearInterval(id);
+    };
   }, [endPoint]);
 
   const dataRamAvailable = data.map((d) => {
