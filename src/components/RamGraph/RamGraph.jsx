@@ -64,7 +64,7 @@ const RamGraph = () => {
 
   return (
     <>
-      <Bar data={graphData} options={options} />
+      <Bar data={graphData} options={options} style={{ marginTop: "3rem" }} />
     </>
   );
 };
