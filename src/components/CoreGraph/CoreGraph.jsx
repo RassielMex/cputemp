@@ -60,11 +60,10 @@ const CoreGraph = () => {
       });
       return core0.map((_core0, idx) => {
         return Math.round(
-          (_core0?.value +
+          _core0?.value +
             core1[idx]?.value +
             core2[idx]?.value +
-            core3[idx]?.value) /
-            4
+            core3[idx]?.value
         );
       });
     } else {
@@ -105,7 +104,7 @@ const CoreGraph = () => {
       { value: 1, inner: "Core 2" },
       { value: 2, inner: "Core 3" },
       { value: 3, inner: "Core 4" },
-      { value: 4, inner: "Promedio" },
+      { value: 4, inner: "Total" },
     ],
   };
 
