@@ -98,6 +98,10 @@ const CoreGraph = () => {
     setCore(_core);
   };
 
+  const onDateChange = (e) => {
+    console.log(e.target.value);
+  };
+
   const select = {
     labelID: "core_label",
     label: "Core",
@@ -119,7 +123,7 @@ const CoreGraph = () => {
           value={core}
           selectConfig={select}
         />
-        <input type={"date"} className="calendar" />
+        <input type={"date"} className="calendar" onChange={onDateChange} />
       </Stack>
       <Bar data={graphData} options={options} />
     </>
