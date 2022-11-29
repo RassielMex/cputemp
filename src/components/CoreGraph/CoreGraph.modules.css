@@ -1,0 +1,7 @@
+.calendar {
+  height: 38px;
+  width: 200px;
+  border-radius: 4px;
+  border: 0.1px solid;
+  border-color: rgb(187, 181, 181);
+}

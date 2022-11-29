@@ -15,6 +15,9 @@ import { options } from "./CoreGraph.Config";
 import { getData } from "../../common/fetchData";
 import colors from "../../common/barColors";
 import { labelsFromTime } from "../../common/createLabels";
+import { Stack } from "@mui/system";
+
+import "./CoreGraph.modules.css";
 
 ChartJS.register(
   CategoryScale,
@@ -110,11 +113,14 @@ const CoreGraph = () => {
 
   return (
     <>
-      <SelectList
-        handleChange={onCoreChange}
-        value={core}
-        selectConfig={select}
-      />
+      <Stack direction={"row"} spacing={2} alignItems={"end"}>
+        <SelectList
+          handleChange={onCoreChange}
+          value={core}
+          selectConfig={select}
+        />
+        <input type={"date"} className="calendar" />
+      </Stack>
       <Bar data={graphData} options={options} />
     </>
   );
