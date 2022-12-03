@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   BarElement,
   CategoryScale,
@@ -11,10 +11,8 @@ import {
 import { Bar } from "react-chartjs-2";
 
 import { options } from "./RamGraph.Config";
-import { getData } from "../../common/fetchData";
-import { labelsFromTime } from "../../common/createLabels";
-import colors from "../../common/barColors";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fecthRamData } from "../../store/slices/ramSlice";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -25,42 +23,19 @@ ChartJS.register(
 );
 
 const RamGraph = () => {
-  const [data, setData] = useState([]);
-  const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_0`;
+  const dispatch = useDispatch();
+
+  const graphData = useSelector((state) => state.ram.graphData);
 
   useEffect(() => {
-    getData(endPoint, setData);
+    dispatch(fecthRamData());
     const id = setInterval(() => {
-      getData(endPoint, setData);
+      dispatch(fecthRamData());
     }, 60000);
     return () => {
       clearInterval(id);
     };
-  }, [endPoint]);
-
-  const dataRamAvailable = data.map((d) => {
-    return d.ram.value_available;
-  });
-  const dataRamUsed = data.map((d) => {
-    return d.ram.value_used;
-  });
-
-  const graphData = {
-    labels: labelsFromTime(data),
-    datasets: [
-      {
-        label: "Ram Used",
-        data: dataRamUsed,
-        backgroundColor: colors.warning,
-      },
-
-      {
-        label: "Ram Available",
-        data: dataRamAvailable,
-        backgroundColor: colors.success,
-      },
-    ],
-  };
+  }, [dispatch]);
 
   return (
     <>

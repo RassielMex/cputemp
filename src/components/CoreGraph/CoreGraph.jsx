@@ -12,12 +12,11 @@ import {
 import { Bar } from "react-chartjs-2";
 import SelectList from "../SelectList/SelectList";
 import { options } from "./CoreGraph.Config";
-import { getData } from "../../common/fetchData";
-import colors from "../../common/barColors";
-import { labelsFromTime } from "../../common/createLabels";
 import { Stack } from "@mui/system";
 
 import "./CoreGraph.modules.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fecthCoreLoad } from "../../store/slices/coreSlice";
 
 ChartJS.register(
   CategoryScale,
@@ -29,70 +28,21 @@ ChartJS.register(
 );
 
 const CoreGraph = () => {
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const graphData = useSelector((state) => {
+    return state.core.graphData;
+  });
   const [core, setCore] = useState(4);
 
-  const endPoint =
-    core >= 4
-      ? `http://back.servicecloudlmex.co/api/v1/cpu_load`
-      : `http://back.servicecloudlmex.co/api/v1/cpu_load?code=core_${core}`;
-
   useEffect(() => {
-    getData(endPoint, setData);
+    dispatch(fecthCoreLoad(core));
     const id = setInterval(() => {
-      getData(endPoint, setData);
+      dispatch(fecthCoreLoad(core));
     }, 60000);
     return () => {
       clearInterval(id);
     };
-  }, [endPoint]);
-
-  const createDataSets = () => {
-    if (core >= 4) {
-      const core0 = data.filter((d) => {
-        return d.core_code === "core_0";
-      });
-      const core1 = data.filter((d) => {
-        return d.core_code === "core_1";
-      });
-      const core2 = data.filter((d) => {
-        return d.core_code === "core_2";
-      });
-      const core3 = data.filter((d) => {
-        return d.core_code === "core_3";
-      });
-      return core0.map((_core0, idx) => {
-        return Math.round(
-          _core0?.value +
-            core1[idx]?.value +
-            core2[idx]?.value +
-            core3[idx]?.value
-        );
-      });
-    } else {
-      return data.map((d) => {
-        return d.value;
-      });
-    }
-  };
-
-  const graphData = {
-    labels:
-      core >= 4
-        ? labelsFromTime(
-            data.filter((d) => {
-              return d.core_code === "core_0";
-            })
-          )
-        : labelsFromTime(data),
-    datasets: [
-      {
-        label: core >= 4 ? "Core usage" : `Core  ${core + 1} usage`,
-        data: createDataSets(),
-        backgroundColor: colors.secondary,
-      },
-    ],
-  };
+  }, [dispatch, core]);
 
   const onCoreChange = (_core) => {
     setCore(_core);
@@ -118,11 +68,7 @@ const CoreGraph = () => {
   return (
     <>
       <Stack direction={"row"} spacing={2} alignItems={"end"}>
-        <SelectList
-          handleChange={onCoreChange}
-          value={core}
-          selectConfig={select}
-        />
+        <SelectList handleChange={onCoreChange} selectConfig={select} />
         <input type={"date"} className="calendar" onChange={onDateChange} />
       </Stack>
       <Bar data={graphData} options={options} />

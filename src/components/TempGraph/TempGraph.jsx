@@ -11,10 +11,9 @@ import {
 
 import { Bar } from "react-chartjs-2";
 import SelectList from "../SelectList/SelectList";
-import { getData } from "../../common/fetchData";
 import { options } from "./TempGraph.Config";
-import { labelsFromTime } from "../../common/createLabels";
-import colors from "../../common/barColors";
+import { useDispatch, useSelector } from "react-redux";
+import { fecthTempData } from "../../store/slices/tempSlice";
 
 ChartJS.register(
   CategoryScale,
@@ -26,45 +25,30 @@ ChartJS.register(
 );
 
 const TempGraph = () => {
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const graphData = useSelector((state) => {
+    return state.temp.graphData;
+  });
   const [core, setCore] = useState(0);
 
-  const endPoint = `http://back.servicecloudlmex.co/api/v1/temp_list/?view=code&code=core_${core}`;
-
   useEffect(() => {
-    getData(endPoint, setData);
+    dispatch(fecthTempData(core));
 
     const id = setInterval(() => {
-      getData(endPoint, setData);
+      dispatch(fecthTempData(core));
     }, 60000);
 
     return () => {
       clearInterval(id);
     };
-  }, [endPoint]);
+  }, [dispatch, core]);
 
-  const dataTemp = data.map((d) => {
-    return d.temp.value;
-  });
-
-  //console.log(dataTemp);
-
-  const graphData = {
-    labels: labelsFromTime(data),
-    datasets: [
-      {
-        label: `Core ${core}`,
-        data: dataTemp,
-        backgroundColor: colors.primary,
-      },
-    ],
+  const handleChange = (value) => {
+    setCore(value);
+    dispatch(fecthTempData(value));
   };
 
-  const onCoreChange = (_core) => {
-    setCore(_core);
-  };
-
-  const select = {
+  const selectConfig = {
     labelID: "core_label",
     label: "Core",
     selectID: "select_core",
@@ -76,11 +60,7 @@ const TempGraph = () => {
 
   return (
     <>
-      <SelectList
-        handleChange={onCoreChange}
-        value={core}
-        selectConfig={select}
-      />
+      <SelectList selectConfig={selectConfig} handleChange={handleChange} />
       <Bar data={graphData} options={options} />
     </>
   );

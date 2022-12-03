@@ -1,5 +1,4 @@
 import { Container, Typography, useMediaQuery, useTheme } from "@mui/material";
-import "./App.css";
 import TempGraph from "./components/TempGraph/TempGraph";
 import RamGraph from "./components/RamGraph/RamGraph";
 import CoreGraph from "./components/CoreGraph/CoreGraph";
