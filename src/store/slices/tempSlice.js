@@ -12,7 +12,7 @@ export const tempSlice = createSlice({
         {
           label: "Temperature",
           data: [],
-          backgroundColor: colors.primary,
+          backgroundColor: colors.secondary,
         },
       ],
     },
