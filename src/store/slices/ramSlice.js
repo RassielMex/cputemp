@@ -17,22 +17,22 @@ export const ramSlice = createSlice({
   },
   reducers: {
     set: (state, action) => {
-      const data = action.payload;
+      const ram = action.payload;
 
       //Ram Used
-      const ramUsed = data.map((d) => {
-        return d.ram.value_used;
+      const ramUsed = ram.map((r) => {
+        return r.value_used;
       });
       state.graphData.datasets[0].data = ramUsed;
 
       //Ram Avaible
-      const ramAvailable = data.map((d) => {
-        return d.ram.value_available;
+      const ramAvailable = ram.map((r) => {
+        return r.value_available;
       });
       state.graphData.datasets[1].data = ramAvailable;
 
       //Labels
-      state.graphData.labels = labelsFromTime(action.payload);
+      state.graphData.labels = labelsFromTime(ram);
 
       //Success
       state.fetchSuccess = true;
@@ -52,7 +52,7 @@ export const fecthRamData = () => {
 
       if ((await requestData).status === 200) {
         const data = (await requestData).data;
-        dispatch(set(data));
+        dispatch(set(data.ram));
       } else {
         dispatch(failRequest());
       }

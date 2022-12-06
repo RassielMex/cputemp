@@ -20,12 +20,12 @@ export const tempSlice = createSlice({
   },
   reducers: {
     set: (state, action) => {
-      const data = action.payload;
+      const temps = action.payload;
       //labels
-      state.graphData.labels = labelsFromTime(data);
+      state.graphData.labels = labelsFromTime(temps);
       //dataset
-      const dataTemp = data.map((d) => {
-        return d.temp.value;
+      const dataTemp = temps.map((t) => {
+        return t.value;
       });
       state.graphData.datasets[0].data = dataTemp;
       //success, loading
@@ -47,7 +47,7 @@ export const fecthTempData = (core) => {
 
       if ((await requestData).status === 200) {
         const data = (await requestData).data;
-        dispatch(set(data));
+        dispatch(set(data.temps));
       } else {
         dispatch(failRequest());
       }
