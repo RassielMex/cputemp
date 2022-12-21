@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import colors from "../../common/barColors";
 import { labelsFromTime } from "../../common/createLabels";
+import { stringDateFormatter } from "../../common/stringFormatter";
 
 export const coreSlice = createSlice({
   name: "core",
@@ -70,13 +71,17 @@ export const coreSlice = createSlice({
   },
 });
 
-export const fecthCoreLoad = (core) => {
+export const fecthCoreLoad = (core, dateTime) => {
   //Set end point and selected core
   const _core = core >= 0 ? core : 4;
+  const date = new Date(dateTime);
+  const strDate = stringDateFormatter(date).slice(0, 10);
+  const hour = stringDateFormatter(date).slice(11, 13);
+
   const endPoint =
     core >= 4
       ? `https://back.servicecloudlmex.co/api/v1/cpu_load`
-      : `https://back.servicecloudlmex.co/api/v1/cpu_load?code=core_${_core}`;
+      : `https://back.servicecloudlmex.co/api/v1/cpu_load?code=core_${_core}&date=${strDate}&hour=${hour}`;
   return async (dispatch) => {
     dispatch(setCore(_core));
     //Get request

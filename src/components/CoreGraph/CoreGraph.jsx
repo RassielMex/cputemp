@@ -17,6 +17,7 @@ import { Stack } from "@mui/system";
 import "./CoreGraph.modules.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fecthCoreLoad } from "../../store/slices/coreSlice";
+import { stringDateFormatter } from "../../common/stringFormatter";
 
 ChartJS.register(
   CategoryScale,
@@ -32,24 +33,28 @@ const CoreGraph = () => {
   const graphData = useSelector((state) => {
     return state.core.graphData;
   });
+
+  const now = new Date();
+  const strDate = stringDateFormatter(now);
   const [core, setCore] = useState(4);
+  const [date, setDate] = useState(strDate);
 
   useEffect(() => {
-    dispatch(fecthCoreLoad(core));
+    dispatch(fecthCoreLoad(core, date));
     const id = setInterval(() => {
-      dispatch(fecthCoreLoad(core));
+      dispatch(fecthCoreLoad(core, date));
     }, 60000);
     return () => {
       clearInterval(id);
     };
-  }, [dispatch, core]);
+  }, [dispatch, core, date]);
 
   const onCoreChange = (_core) => {
     setCore(_core);
   };
 
   const onDateChange = (e) => {
-    console.log(e.target.value);
+    setDate(e.target.value);
   };
 
   const select = {
@@ -69,7 +74,12 @@ const CoreGraph = () => {
     <>
       <Stack direction={"row"} spacing={2} alignItems={"end"}>
         <SelectList handleChange={onCoreChange} selectConfig={select} />
-        <input type={"date"} className="calendar" onChange={onDateChange} />
+        <input
+          type={"datetime-local"}
+          className="calendar"
+          onChange={onDateChange}
+          value={date}
+        />
       </Stack>
       <Bar data={graphData} options={options} />
     </>
