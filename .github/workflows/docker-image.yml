@@ -16,6 +16,6 @@ jobs:
         run: docker build . --file Dockerfile --tag react-app
       - name: deploy Docker image
         run: |
-          docker ps | grep "react-app"  | awk '{print "docker container stop " $1}' | bash
+          docker ps -q --filter ancestor="react-app" | xargs -r docker stop
           docker run -d --network bridge -p 3000:3000 react-app:latest
         shell: bash
