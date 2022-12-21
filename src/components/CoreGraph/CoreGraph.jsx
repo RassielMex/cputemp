@@ -36,7 +36,7 @@ const CoreGraph = () => {
 
   const now = new Date();
   const strDate = stringDateFormatter(now);
-  const [core, setCore] = useState(4);
+  const [core, setCore] = useState(0);
   const [date, setDate] = useState(strDate);
 
   useEffect(() => {

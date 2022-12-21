@@ -82,6 +82,7 @@ export const fecthCoreLoad = (core, dateTime) => {
     core >= 4
       ? `https://back.servicecloudlmex.co/api/v1/cpu_load`
       : `https://back.servicecloudlmex.co/api/v1/cpu_load?code=core_${_core}&date=${strDate}&hour=${hour}`;
+  console.log(endPoint);
   return async (dispatch) => {
     dispatch(setCore(_core));
     //Get request
