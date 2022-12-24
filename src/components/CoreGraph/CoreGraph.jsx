@@ -74,7 +74,6 @@ const CoreGraph = () => {
     <>
       <Stack direction={"row"} spacing={2} alignItems={"end"}>
         <SelectList handleChange={onCoreChange} selectConfig={select} />
-        <h2> Hola Soy Luis</h2>
         <input
           type={"datetime-local"}
           className="calendar"
