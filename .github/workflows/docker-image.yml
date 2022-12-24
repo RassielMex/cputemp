@@ -16,5 +16,6 @@ jobs:
         run: docker build . --file Dockerfile --tag react-app
       - name: deploy Docker image
         run: |
+          docker ps -q --filter  "expose=3000" | xargs -r docker stop
           docker run -d --network bridge -p 3000:3000 react-app:latest
         shell: bash
