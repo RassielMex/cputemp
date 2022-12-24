@@ -2,8 +2,8 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 
-const SelectList = ({ selectConfig, handleChange }) => {
-  const [value, setValue] = useState(0);
+const SelectList = ({ selectConfig, handleChange, initialState }) => {
+  const [value, setValue] = useState(initialState || 0);
 
   return (
     <FormControl size="small" sx={{ marginTop: "3rem" }}>

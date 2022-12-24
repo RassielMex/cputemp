@@ -60,7 +60,11 @@ const TempGraph = () => {
 
   return (
     <>
-      <SelectList selectConfig={selectConfig} handleChange={handleChange} />
+      <SelectList
+        selectConfig={selectConfig}
+        handleChange={handleChange}
+        initialState={core}
+      />
       <Bar data={graphData} options={options} />
     </>
   );

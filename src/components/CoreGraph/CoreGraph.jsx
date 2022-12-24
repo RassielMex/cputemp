@@ -36,7 +36,7 @@ const CoreGraph = () => {
 
   const now = new Date();
   const strDate = stringDateFormatter(now);
-  const [core, setCore] = useState(0);
+  const [core, setCore] = useState(4);
   const [date, setDate] = useState(strDate);
 
   useEffect(() => {
@@ -73,7 +73,11 @@ const CoreGraph = () => {
   return (
     <>
       <Stack direction={"row"} spacing={2} alignItems={"end"}>
-        <SelectList handleChange={onCoreChange} selectConfig={select} />
+        <SelectList
+          handleChange={onCoreChange}
+          selectConfig={select}
+          initialState={core}
+        />
         <input
           type={"datetime-local"}
           className="calendar"

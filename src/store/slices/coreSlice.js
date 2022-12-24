@@ -80,7 +80,7 @@ export const fecthCoreLoad = (core, dateTime) => {
 
   const endPoint =
     core >= 4
-      ? `https://back.servicecloudlmex.co/api/v1/cpu_load`
+      ? `https://back.servicecloudlmex.co/api/v1/cpu_load?date=${strDate}&hour=${hour}`
       : `https://back.servicecloudlmex.co/api/v1/cpu_load?code=core_${_core}&date=${strDate}&hour=${hour}`;
 
   return async (dispatch) => {
