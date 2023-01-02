@@ -3,7 +3,7 @@ export const stringDateFormatter = (date) => {
   let str = "";
   if (date instanceof Date) {
     const yearStr = date.getFullYear().toString();
-    const monthStr = (date.getMonth() + 1).toString();
+    const monthStr = dateZeroFormatter(date.getMonth() + 1).toString();
     const dayStr = dateZeroFormatter(date.getDate());
     const hourStr = dateZeroFormatter(date.getHours());
     const minuteStr = dateZeroFormatter(date.getMinutes());
